@@ -1,0 +1,13 @@
+EXPORTS
+    RNG_RNGInit
+    PORT_FreeArena
+    SECITEM_FreeItem
+    SECOID_Init
+    SECOID_Shutdown
+    EC_DecodeParams
+    EC_NewKeyFromSeed
+    EC_NewKey
+    ECDSA_SignDigestWithSeed
+    ECDSA_SignDigest
+    ECDSA_VerifyDigest
+    ECDH_Derive
