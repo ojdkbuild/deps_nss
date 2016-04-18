@@ -843,3 +843,5 @@ target_compile_definitions ( ${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_DEFS} )
 
 # build order
 add_dependencies ( ${PROJECT_NAME}_util lookaside_nspr )
+add_dependencies ( ${PROJECT_NAME}_softokn ${PROJECT_NAME}_util )
+add_dependencies ( ${PROJECT_NAME} ${PROJECT_NAME}_softokn )
