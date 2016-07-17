@@ -17,14 +17,14 @@ cmake_minimum_required ( VERSION 2.8.12 )
 # project
 include ( ${CMAKE_CURRENT_LIST_DIR}/../../resources/cmake/ojdkbuild_common.cmake )
 project ( ojdkbuild_nss C CXX )
-set ( ${PROJECT_NAME}_OJDKBUILD_VERSION 3.19.1-0 )
+set ( ${PROJECT_NAME}_OJDKBUILD_VERSION 3.21.0-0 )
 
 # dependencies
 ojdkbuild_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../zlib )
 
 # static libraries
-add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nspr_4108_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nspr )
-add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nss_3191_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nss )
+add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nspr_411_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nspr )
+add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nss_321_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nss )
 
 set ( ${PROJECT_NAME}_DEPS zlib )
 ojdkbuild_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )

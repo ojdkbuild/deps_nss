@@ -15,7 +15,7 @@
 # this file is based on https://github.com/staticlibs/mirror_freetype2/blob/master/CMakeLists.txt
 cmake_minimum_required ( VERSION 2.8.12 )
 project ( lookaside_nspr C )
-set ( ${PROJECT_NAME}_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../lookaside_nspr )
+set ( ${PROJECT_NAME}_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/../../../../lookaside/nspr )
 
 # standalone build
 if ( NOT DEFINED STATICLIB_TOOLCHAIN )
