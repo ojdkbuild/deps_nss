@@ -48,17 +48,6 @@ file ( RENAME ${CMAKE_CURRENT_BINARY_DIR}/include/${${PROJECT_NAME}_PRCPUCFG_FIL
         ${CMAKE_CURRENT_BINARY_DIR}/include/prcpucfg.h )
 file (COPY ${CMAKE_CURRENT_LIST_DIR}/../nspr_include/_pr_bld.h
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/include/ )
-# strip dllexport/import
-if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
-    if ( EXISTS ${${PROJECT_NAME}_SOURCE_DIR}/pr/include/prtypes.h )
-        file ( RENAME ${${PROJECT_NAME}_SOURCE_DIR}/pr/include/prtypes.h
-                ${${PROJECT_NAME}_SOURCE_DIR}/pr/include/prtypes.h_DISABLED )
-    endif ( )
-    file ( READ ${${PROJECT_NAME}_SOURCE_DIR}/pr/include/prtypes.h_DISABLED PRTYPES_H )
-    string ( REGEX REPLACE "__declspec\\(dllexport\\)" "" PRTYPES_H "${PRTYPES_H}" ) 
-    string ( REGEX REPLACE "__declspec\\(dllimport\\)" "" PRTYPES_H "${PRTYPES_H}" )    
-endif ( )
-file ( WRITE ${PROJECT_BINARY_DIR}/include/prtypes.h "${PRTYPES_H}" )
 
 # library
 if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )

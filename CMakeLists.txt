@@ -74,7 +74,7 @@ file ( COPY
         ${${PROJECT_NAME}_NSPR_DIR}/pr/include/prlock.h
         ${${PROJECT_NAME}_NSPR_DIR}/pr/include/prlog.h
         ${${PROJECT_NAME}_NSPR_DIR}/pr/include/prmon.h
-        ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nspr/include/prtypes.h
+        ${${PROJECT_NAME}_NSPR_DIR}/pr/include/prtypes.h
         ${${PROJECT_NAME}_NSS_UTIL_DIR}/lib/util/secasn1.h
         ${${PROJECT_NAME}_NSS_UTIL_DIR}/lib/util/secasn1t.h
         ${${PROJECT_NAME}_NSS_UTIL_DIR}/lib/util/seccomon.h
