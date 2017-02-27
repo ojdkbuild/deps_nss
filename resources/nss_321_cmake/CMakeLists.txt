@@ -86,6 +86,7 @@ source_group ( "include" FILES ${${PROJECT_NAME}_UTIL_HEADERS} )
         
 # softokn
 set ( ${PROJECT_NAME}_SOFTOKN_SRC )
+
 # freebl
 set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         # ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/loader.c
@@ -142,13 +143,15 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_521.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_256_32.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-wrap.c )
-set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
+list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
 source_group ( "src_freebl" FILES ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
+
 # sqlite
 set ( ${PROJECT_NAME}_SOFTOKN_SQLITE_SRC               
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/sqlite/sqlite3.c )
-set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} ${${PROJECT_NAME}_SOFTOKN_SQLITE_SRC} )
-source_group ( "src_sqlite" FILES ${${PROJECT_NAME}_SOFTOKN_SQLITE_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SQLITE_SRC} )
+source_group ( "src_sqlite" FILES ${${PROJECT_NAME}_SOFTOKN_SQLITE_SRC} )
+
 # dbm
 set ( ${PROJECT_NAME}_SOFTOKN_DBM_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dbm/src/db.c
@@ -160,8 +163,9 @@ set ( ${PROJECT_NAME}_SOFTOKN_DBM_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dbm/src/hash_buf.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dbm/src/mktemp.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dbm/src/dirent.c )
-set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} ${${PROJECT_NAME}_SOFTOKN_DBM_SRC} )
-source_group ( "src_dbm" FILES ${${PROJECT_NAME}_SOFTOKN_DBM_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_DBM_SRC} )
+source_group ( "src_dbm" FILES ${${PROJECT_NAME}_SOFTOKN_DBM_SRC} )
+
 # softoken
 set ( ${PROJECT_NAME}_SOFTOKN_SOFTOKEN_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/fipsaudt.c
@@ -182,8 +186,9 @@ set ( ${PROJECT_NAME}_SOFTOKN_SOFTOKEN_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/softkver.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/tlsprf.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/jpakesftk.c )
-set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} ${${PROJECT_NAME}_SOFTOKN_SOFTOKEN_SRC} )
-source_group ( "src_softoken" FILES ${${PROJECT_NAME}_SOFTOKN_SOFTOKEN_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SOFTOKEN_SRC} )
+source_group ( "src_softoken" FILES ${${PROJECT_NAME}_SOFTOKN_SOFTOKEN_SRC} )
+
 # softoken/legacydb
 set ( ${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/legacydb/dbmshim.c
@@ -198,8 +203,10 @@ set ( ${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/legacydb/lowkey.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/legacydb/pcertdb.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/legacydb/pk11db.c )
-set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} ${${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC} )
+list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC} )
 source_group ( "src_legacydb" FILES ${${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC} )        
+
+# includes
 set ( ${PROJECT_NAME}_SOFTOKN_INCLUDES 
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/sqlite
@@ -211,6 +218,7 @@ set ( ${PROJECT_NAME}_SOFTOKN_INCLUDES
 
 # main
 set ( ${PROJECT_NAME}_SRC )
+
 # base
 set ( ${PROJECT_NAME}_BASE_SRC       
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/base/arena.c
@@ -223,16 +231,18 @@ set ( ${PROJECT_NAME}_BASE_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/base/utf8.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/base/list.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/base/hash.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_BASE_SRC} )
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_BASE_SRC} )
 source_group ( "src_base" FILES ${${PROJECT_NAME}_BASE_SRC} )        
+
 # dev
 set ( ${PROJECT_NAME}_DEV_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dev/devslot.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dev/devtoken.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dev/devutil.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dev/ckhelper.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_DEV_SRC} )
-source_group ( "src_dev" FILES ${${PROJECT_NAME}_DEV_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_DEV_SRC} )
+source_group ( "src_dev" FILES ${${PROJECT_NAME}_DEV_SRC} )
+
 # pki
 set ( ${PROJECT_NAME}_PKI_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pki/asymmkey.c
@@ -245,8 +255,9 @@ set ( ${PROJECT_NAME}_PKI_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pki/pkistore.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pki/pkibase.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pki/pki3hack.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_PKI_SRC} )
-source_group ( "src_dev" FILES ${${PROJECT_NAME}_PKI_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_PKI_SRC} )
+source_group ( "src_dev" FILES ${${PROJECT_NAME}_PKI_SRC} )
+
 # libpkix
 set ( ${PROJECT_NAME}_LIBPIX_SRC
         # libpkix/pkix/certsel
@@ -337,8 +348,9 @@ set ( ${PROJECT_NAME}_LIBPIX_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/libpkix/pkix_pl_nss/module/pkix_pl_nsscontext.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/libpkix/pkix_pl_nss/module/pkix_pl_pk11certstore.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/libpkix/pkix_pl_nss/module/pkix_pl_socket.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_LIBPIX_SRC} )
-source_group ( "src_libpkix" FILES ${${PROJECT_NAME}_LIBPIX_SRC} )         
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_LIBPIX_SRC} )
+source_group ( "src_libpkix" FILES ${${PROJECT_NAME}_LIBPIX_SRC} )
+
 # lib/certdb
 set ( ${PROJECT_NAME}_CERTB_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certdb/alg1485.c
@@ -353,8 +365,9 @@ set ( ${PROJECT_NAME}_CERTB_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certdb/xauthkid.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certdb/xbsconst.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certdb/xconst.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_CERTB_SRC} )
-source_group ( "src_certdb" FILES ${${PROJECT_NAME}_CERTB_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_CERTB_SRC} )
+source_group ( "src_certdb" FILES ${${PROJECT_NAME}_CERTB_SRC} )
+
 # lib/certhigh
 set ( ${PROJECT_NAME}_CERHIGH_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certhigh/certhtml.c
@@ -366,8 +379,9 @@ set ( ${PROJECT_NAME}_CERHIGH_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certhigh/certvfy.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certhigh/certvfypkix.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/certhigh/xcrldist.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_CERHIGH_SRC} )
-source_group ( "src_certhigh" FILES ${${PROJECT_NAME}_CERHIGH_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_CERHIGH_SRC} )
+source_group ( "src_certhigh" FILES ${${PROJECT_NAME}_CERHIGH_SRC} )
+
 # lib/pk11wrap
 set ( ${PROJECT_NAME}_PK11WRAP_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pk11wrap/dev3hack.c
@@ -391,8 +405,9 @@ set ( ${PROJECT_NAME}_PK11WRAP_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pk11wrap/pk11skey.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pk11wrap/pk11slot.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pk11wrap/pk11util.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_PK11WRAP_SRC} )
-source_group ( "src_pk11wrap" FILES ${${PROJECT_NAME}_PK11WRAP_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_PK11WRAP_SRC} )
+source_group ( "src_pk11wrap" FILES ${${PROJECT_NAME}_PK11WRAP_SRC} )
+
 # lib/cryptohi
 set ( ${PROJECT_NAME}_CRYPTOHI_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/cryptohi/sechash.c
@@ -400,16 +415,18 @@ set ( ${PROJECT_NAME}_CRYPTOHI_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/cryptohi/secsign.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/cryptohi/secvfy.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/cryptohi/dsautil.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_CRYPTOHI_SRC} )
-source_group ( "src_cryptohi" FILES ${${PROJECT_NAME}_CRYPTOHI_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_CRYPTOHI_SRC} )
+source_group ( "src_cryptohi" FILES ${${PROJECT_NAME}_CRYPTOHI_SRC} )
+
 # lib/nss
 set ( ${PROJECT_NAME}_NSS_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/nss/nssinit.c
         #${${PROJECT_NAME}_SOURCE_DIR}/lib/nss/nssoptions.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/nss/nssver.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/nss/utilwrap.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_NSS_SRC} )
-source_group ( "src_nss" FILES ${${PROJECT_NAME}_NSS_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_NSS_SRC} )
+source_group ( "src_nss" FILES ${${PROJECT_NAME}_NSS_SRC} )
+
 # lib/ssl
 set ( ${PROJECT_NAME}_SSL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/derive.c
@@ -438,8 +455,9 @@ set ( ${PROJECT_NAME}_SSL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/cmpcert.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslinfo.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3ecc.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_SSL_SRC} )
-source_group ( "src_ssl" FILES ${${PROJECT_NAME}_SSL_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SSL_SRC} )
+source_group ( "src_ssl" FILES ${${PROJECT_NAME}_SSL_SRC} )
+
 # lib/pkcs7
 set ( ${PROJECT_NAME}_PKCS7_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs7/certread.c
@@ -449,8 +467,9 @@ set ( ${PROJECT_NAME}_PKCS7_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs7/p7encode.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs7/p7local.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs7/secmime.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_PKCS7_SRC} )
-source_group ( "src_pkcs7" FILES ${${PROJECT_NAME}_PKCS7_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_PKCS7_SRC} )
+source_group ( "src_pkcs7" FILES ${${PROJECT_NAME}_PKCS7_SRC} )
+
 # lib/pkcs12
 set ( ${PROJECT_NAME}_PKCS12_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs12/p12local.c
@@ -460,8 +479,9 @@ set ( ${PROJECT_NAME}_PKCS12_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs12/p12tmpl.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs12/p12e.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs12/p12d.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_PKCS12_SRC} )
-source_group ( "src_pkcs12" FILES ${${PROJECT_NAME}_PKCS12_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_PKCS12_SRC} )
+source_group ( "src_pkcs12" FILES ${${PROJECT_NAME}_PKCS12_SRC} )
+
 # lib/smime
 set ( ${PROJECT_NAME}_SMIME_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/smime/cmsarray.c
@@ -486,8 +506,9 @@ set ( ${PROJECT_NAME}_SMIME_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/smime/smimemessage.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/smime/smimeutil.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/smime/smimever.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_SMIME_SRC} )
-source_group ( "src_smime" FILES ${${PROJECT_NAME}_SMIME_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SMIME_SRC} )
+source_group ( "src_smime" FILES ${${PROJECT_NAME}_SMIME_SRC} )
+
 # lib/crmf
 set ( ${PROJECT_NAME}_CRMF_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/crmf/crmfenc.c
@@ -507,8 +528,9 @@ set ( ${PROJECT_NAME}_CRMF_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/crmf/respcmn.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/crmf/challcli.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/crmf/asn1cmn.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_CRMF_SRC} )
-source_group ( "src_smime" FILES ${${PROJECT_NAME}_CRMF_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_CRMF_SRC} )
+source_group ( "src_smime" FILES ${${PROJECT_NAME}_CRMF_SRC} )
+
 # lib/jar
 set ( ${PROJECT_NAME}_JAR_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/jar/jarver.c
@@ -517,8 +539,9 @@ set ( ${PROJECT_NAME}_JAR_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/jar/jar-ds.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/jar/jarfile.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/jar/jarint.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_JAR_SRC} )
-source_group ( "src_jar" FILES ${${PROJECT_NAME}_JAR_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_JAR_SRC} )
+source_group ( "src_jar" FILES ${${PROJECT_NAME}_JAR_SRC} )
+
 # lib/ckfw
 set ( ${PROJECT_NAME}_CKFW_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ckfw/crypto.c
@@ -544,13 +567,16 @@ set ( ${PROJECT_NAME}_CKFW_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ckfw/builtins/btoken.c
         ${CMAKE_CURRENT_LIST_DIR}/../certdata/certdata.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ckfw/builtins/ckbiver.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_CKFW_SRC} )
-source_group ( "src_ckfw" FILES ${${PROJECT_NAME}_CKFW_SRC} )         
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_CKFW_SRC} )
+source_group ( "src_ckfw" FILES ${${PROJECT_NAME}_CKFW_SRC} )
+
 # lib/sysinit
 set ( ${PROJECT_NAME}_SYSINIT_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/sysinit/nsssysinit.c )
-set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_SYSINIT_SRC} )
-source_group ( "src_sysinit" FILES ${${PROJECT_NAME}_SYSINIT_SRC} )        
+list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SYSINIT_SRC} )
+source_group ( "src_sysinit" FILES ${${PROJECT_NAME}_SYSINIT_SRC} )
+
+# includes
 set ( ${PROJECT_NAME}_INCLUDES 
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/base
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/dev
@@ -643,7 +669,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )
             -DSOFTOKEN_LIB_NAME=\"libsoftokn3.so\" )
 
     if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_amd64_[^_]+" )
-        set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} 
+        list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC
                 ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mp_comba.c
                 ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64.c
                 ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/stubs.c
@@ -660,7 +686,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )
                 PROPERTIES 
                 COMPILE_FLAGS -Wa,--noexecstack 
                 LANGUAGE C )
-        set ( ${PROJECT_NAME}_SOFTOKN_DEFS ${${PROJECT_NAME}_SOFTOKN_DEFS}
+        list ( APPEND ${PROJECT_NAME}_SOFTOKN_DEFS
                 -DNSS_X86_OR_X64
                 -DNSS_X64
                 -DNSS_USE_64
@@ -709,6 +735,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )
             -DSOFTOKEN_SHLIB_VERSION=\"3\"
             -DMOZILLA_CLIENT=1 )
 endif ( )
+
 # windows
 if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
     # util
@@ -758,11 +785,12 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             -DHAVE_STRERROR
             -DHAVE_SNPRINTF
             -DMEMMOVE 
-            -D__DBINTERFACE_PRIVATE )   
+            -D__DBINTERFACE_PRIVATE )
+
     # main
     set ( ${PROJECT_NAME}_WIN_SRC              
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/win32err.c )
-    set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC} ${${PROJECT_NAME}_WIN_SRC} )
+    list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_WIN_SRC} )
     source_group ( "src_win" FILES ${${PROJECT_NAME}_WIN_SRC} )           
     set ( ${PROJECT_NAME}_OPTS
             /wd4013
@@ -791,36 +819,38 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             -DSOFTOKEN_SHLIB_VERSION=\"3\" )
 endif ( )
 if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_i386_[^_]+" )
-    set ( ${PROJECT_NAME}_UTIL_DEFS ${${PROJECT_NAME}_UTIL_DEFS}
+    list ( APPEND ${PROJECT_NAME}_UTIL_DEFS
             -D_X86_ )          
-    set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC}            
+    list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_x86_asm.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes-x86-masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-x86-masm.asm )         
-    set ( ${PROJECT_NAME}_SOFTOKN_DEFS ${${PROJECT_NAME}_SOFTOKN_DEFS} 
+    list ( APPEND ${PROJECT_NAME}_SOFTOKN_DEFS
             -DMP_USE_UINT_DIGIT
             -D_X86_
-            -DNSS_X86 )
-    set ( ${PROJECT_NAME}_DEFS ${${PROJECT_NAME}_DEFS} 
+            -DNSS_X86
+            -DMP_ASSEMBLY_SQUARE )
+    list ( APPEND ${PROJECT_NAME}_DEFS
             -D_X86_
             -DNSS_X86 )
 endif ( )
+
 if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_amd64_[^_]+" )    
-    set ( ${PROJECT_NAME}_UTIL_DEFS ${${PROJECT_NAME}_UTIL_DEFS}
+    list ( APPEND ${PROJECT_NAME}_UTIL_DEFS
            -D_AMD64_=1 )
     set ( ${PROJECT_NAME}_SOFTOKN_WIN64_SRC
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64_masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes-x64-masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-x64-masm.asm )
-    set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} ${${PROJECT_NAME}_SOFTOKN_WIN64_SRC} )
+    list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_WIN64_SRC} )
     source_group ( "src_win64" FILES ${${PROJECT_NAME}_SOFTOKN_WIN64_SRC} )
-    set ( ${PROJECT_NAME}_SOFTOKN_DEFS ${${PROJECT_NAME}_SOFTOKN_DEFS} 
+    list ( APPEND ${PROJECT_NAME}_SOFTOKN_DEFS
             -D_AMD64_
             -DNSS_X64
             -DNSS_USE_64
             -DMPI_AMD64 )
-    set ( ${PROJECT_NAME}_DEFS ${${PROJECT_NAME}_DEFS} 
+    list ( APPEND ${PROJECT_NAME}_DEFS
             -D_AMD64_
             -DNSS_X64
             -DNSS_USE_64
