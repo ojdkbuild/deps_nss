@@ -23,8 +23,8 @@ set ( ${PROJECT_NAME}_OJDKBUILD_VERSION 3.21.0-0 )
 ojdkbuild_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../zlib )
 
 # static libraries
-add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nspr_411_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nspr )
-add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nss_321_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nss )
+add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nspr_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nspr )
+add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/resources/nss_cmake ${CMAKE_CURRENT_BINARY_DIR}/lookaside_nss )
 
 set ( ${PROJECT_NAME}_DEPS zlib )
 ojdkbuild_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
@@ -52,6 +52,7 @@ file ( COPY
         ${${PROJECT_NAME}_NSS_DIR}/lib/freebl/blapi.h
         ${${PROJECT_NAME}_NSS_DIR}/lib/freebl/blapit.h
         ${${PROJECT_NAME}_NSS_DIR}/lib/freebl/ecl/ecl-exp.h
+        ${${PROJECT_NAME}_NSS_UTIL_DIR}/lib/util/eccutil.h
         ${${PROJECT_NAME}_NSS_UTIL_DIR}/lib/util/hasht.h
         ${${PROJECT_NAME}_NSS_DIR}/lib/cryptohi/keythi.h
         ${${PROJECT_NAME}_NSS_UTIL_DIR}/lib/util/nssilckt.h

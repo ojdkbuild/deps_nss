@@ -112,6 +112,10 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/rijndael.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/aeskeywrap.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/camellia.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/chacha20.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/chacha20poly1305.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/poly1305.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/det_rng.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/dh.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ec.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecdecode.c
@@ -138,10 +142,12 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_mont.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ec_naf.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_jm.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_25519.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_256.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_384.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_521.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_256_32.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/uint128.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-wrap.c )
 list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
 source_group ( "src_freebl" FILES ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
@@ -429,7 +435,6 @@ source_group ( "src_nss" FILES ${${PROJECT_NAME}_NSS_SRC} )
 
 # lib/ssl
 set ( ${PROJECT_NAME}_SSL_SRC
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/derive.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/dtlscon.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/prelib.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3con.c
@@ -442,7 +447,6 @@ set ( ${PROJECT_NAME}_SSL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslerrstrs.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslinit.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3ext.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslgathr.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslmutex.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslnonce.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslreveal.c
@@ -822,6 +826,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_i386_[^_]+" )
     list ( APPEND ${PROJECT_NAME}_UTIL_DEFS
             -D_X86_ )          
     list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC
+            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/curve25519_32.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_x86_asm.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes-x86-masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-x86-masm.asm )         
@@ -839,6 +844,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_amd64_[^_]+" )
     list ( APPEND ${PROJECT_NAME}_UTIL_DEFS
            -D_AMD64_=1 )
     set ( ${PROJECT_NAME}_SOFTOKN_WIN64_SRC
+            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/curve25519_64.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64_masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes-x64-masm.asm
