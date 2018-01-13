@@ -131,7 +131,7 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpmontg.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mplogic.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mp_gf2m.c      
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mp_gf2m.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpcpucache.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecl.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecl_curve.c
@@ -751,8 +751,11 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             -D_CRT_NONSTDC_NO_WARNINGS
             -DXP_PC
             -DWIN32
+            -UDEBUG
+            -DNDEBUG
             -D_WINDOWS
             -DWIN95
+            -DNSS_NO_INIT_SUPPORT
             -DUSE_UTIL_DIRECTLY
             -DNO_NSPR_10_SUPPORT
             -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES )
@@ -762,7 +765,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             /wd4013
             /wd4018
             /wd4244
-            /wd4267 )    
+            /wd4267 )
     set ( ${PROJECT_NAME}_SOFTOKN_DEFS
             -D_CRT_SECURE_NO_WARNINGS
             -D_CRT_NONSTDC_NO_WARNINGS
@@ -773,15 +776,23 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             -DSOFTOKEN_SHLIB_VERSION=\"3\"
             -DSOFTOKEN_LIB_NAME=\"softokn3.dll\"
             -DRIJNDAEL_INCLUDE_TABLES
-            -DWIN32            
+            -DWIN32
+            -UDEBUG
+            -DNDEBUG
             -D_WINDOWS
             -DWIN95
+            -DNSS_NO_INIT_SUPPORT
             -DUSE_UTIL_DIRECTLY
             -DNO_NSPR_10_SUPPORT
             -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
             -DNSS_X86_OR_X64
-            -DMP_ASSEMBLY_MULTIPLY            
+            -DMP_IS_LITTLE_ENDIAN
+            -DMP_ASSEMBLY_MULTIPLY
             # -DMP_NO_MP_WORD
+            -DNSS_BEVAND_ARCFOUR
+            -DMPI_AMD64
+            -DMP_ASSEMBLY_MULTIPLY
+            #-DNSS_USE_COMBA
             -DUSE_HW_AES
             -DINTEL_GCM
             -DMP_API_COMPATIBLE
@@ -792,28 +803,30 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             -D__DBINTERFACE_PRIVATE )
 
     # main
-    set ( ${PROJECT_NAME}_WIN_SRC              
+    set ( ${PROJECT_NAME}_WIN_SRC
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/win32err.c )
     list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_WIN_SRC} )
-    source_group ( "src_win" FILES ${${PROJECT_NAME}_WIN_SRC} )           
+    source_group ( "src_win" FILES ${${PROJECT_NAME}_WIN_SRC} )
     set ( ${PROJECT_NAME}_OPTS
             /wd4013
             /wd4018
             /wd4133
             /wd4244
-            /wd4267 )            
+            /wd4267 )
     set ( ${PROJECT_NAME}_DEFS
             -D_CRT_SECURE_NO_WARNINGS
             -D_CRT_NONSTDC_NO_WARNINGS
             -DXP_PC
             -DWIN32
+            -UDEBUG
+            -DNDEBUG
             -D_WINDOWS
             -DWIN95
             -DUSE_UTIL_DIRECTLY
             -DNO_NSPR_10_SUPPORT
             -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
             -DMOZILLA_CLIENT=1
-            -DNSS_X86_OR_X64           
+            -DNSS_X86_OR_X64
             -DNSS_ENABLE_ZLIB
             -DIN_LIBSSL
             -DWIN32_NSS3_DLL_COMPAT
@@ -840,7 +853,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_i386_[^_]+" )
             -DNSS_X86 )
 endif ( )
 
-if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_amd64_[^_]+" )    
+if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_amd64_[^_]+" )
     list ( APPEND ${PROJECT_NAME}_UTIL_DEFS
            -D_AMD64_=1 )
     set ( ${PROJECT_NAME}_SOFTOKN_WIN64_SRC
@@ -880,7 +893,7 @@ target_compile_options ( ${PROJECT_NAME}_softokn PRIVATE ${${PROJECT_NAME}_SOFTO
 target_compile_definitions ( ${PROJECT_NAME}_softokn PRIVATE ${${PROJECT_NAME}_SOFTOKN_DEFS} )
 
 add_library ( ${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SRC} )
-target_include_directories ( ${PROJECT_NAME} BEFORE PRIVATE 
+target_include_directories ( ${PROJECT_NAME} BEFORE PRIVATE
         ${${PROJECT_NAME}_INCLUDES}
         ${${PROJECT_NAME}_UTIL_INCLUDES}
         ${${PROJECT_NAME}_SOFTOKN_INCLUDES}
