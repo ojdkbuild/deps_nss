@@ -790,7 +790,6 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
             -DMP_ASSEMBLY_MULTIPLY
             # -DMP_NO_MP_WORD
             -DNSS_BEVAND_ARCFOUR
-            -DMPI_AMD64
             -DMP_ASSEMBLY_MULTIPLY
             #-DNSS_USE_COMBA
             -DUSE_HW_AES
