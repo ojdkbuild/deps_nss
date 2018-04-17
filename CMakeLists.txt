@@ -19,6 +19,9 @@ include ( ${CMAKE_CURRENT_LIST_DIR}/../../resources/cmake/ojdkbuild_common.cmake
 project ( ojdkbuild_nss C CXX )
 set ( ${PROJECT_NAME}_OJDKBUILD_VERSION 3.21.0-0 )
 
+configure_file ( ${OJDKBUILD_DIR}/resources/buildres/deplib.rc
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc )
+
 # dependencies
 ojdkbuild_add_subdirectory ( ${CMAKE_CURRENT_LIST_DIR}/../zlib )
 
@@ -30,7 +33,9 @@ set ( ${PROJECT_NAME}_DEPS zlib )
 ojdkbuild_pkg_check_modules ( ${PROJECT_NAME}_DEPS_PC REQUIRED ${PROJECT_NAME}_DEPS )
 
 # shared_library
-add_library ( ${PROJECT_NAME} SHARED ${CMAKE_CURRENT_LIST_DIR}/resources/${PROJECT_NAME}.def )
+add_library ( ${PROJECT_NAME} SHARED
+        ${CMAKE_CURRENT_LIST_DIR}/resources/${PROJECT_NAME}.def
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.rc )
 set_target_properties ( ${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE C )
 target_link_libraries ( ${PROJECT_NAME} 
         lookaside_nss
@@ -40,7 +45,8 @@ target_link_libraries ( ${PROJECT_NAME}
         ${${PROJECT_NAME}_DEPS_PC_LIBRARIES}
         ws2_32
         winmm )
-        
+set_property ( TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS "/manifest:no" )
+
 # public headers
 set ( ${PROJECT_NAME}_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/install/include )
 file ( MAKE_DIRECTORY ${${PROJECT_NAME}_INCLUDE_DIR} )
