@@ -27,8 +27,6 @@ if ( NOT DEFINED STATICLIB_TOOLCHAIN )
             else ( )
                 set ( ${PROJECT_NAME}_TOOLCHAIN "windows_i386_msvc" )
             endif ( )
-        elseif ( UNIX )
-            set ( ${PROJECT_NAME}_TOOLCHAIN "linux_amd64_gcc" )
         else ( )
             message ( FATAL_ERROR "Cannot determine toolchain to use, please specify [${PROJECT_NAME}_TOOLCHAIN]" )
         endif ( )
@@ -50,6 +48,23 @@ set ( ${PROJECT_NAME}_NSPR_INCLUDES
         ${${PROJECT_NAME}_SOURCE_DIR}/../nspr/lib/libc/include )
 
 # util
+set ( ${PROJECT_NAME}_UTIL_OPTS
+        /wd4244
+        /wd4267
+        /wd4312 )
+set ( ${PROJECT_NAME}_UTIL_DEFS
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_CRT_NONSTDC_NO_WARNINGS
+        -DXP_PC
+        -DWIN32
+        -UDEBUG
+        -DNDEBUG
+        -D_WINDOWS
+        -DWIN95
+        -DNSS_NO_INIT_SUPPORT
+        -DUSE_UTIL_DIRECTLY
+        -DNO_NSPR_10_SUPPORT
+        -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES )
 set ( ${PROJECT_NAME}_UTIL_SRC
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/quickder.c
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/secdig.c
@@ -77,7 +92,8 @@ set ( ${PROJECT_NAME}_UTIL_SRC
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/templates
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/utf8.c
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/utilmod.c
-        ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/utilpars.c )
+        ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/utilpars.c
+        ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util/pkcs11uri.c )
 source_group ( "src" FILES ${${PROJECT_NAME}_UTIL_SRC} )
 set ( ${PROJECT_NAME}_UTIL_INCLUDES 
         ${${PROJECT_NAME}_UTIL_SOURCE_DIR}/lib/util )
@@ -86,6 +102,47 @@ source_group ( "include" FILES ${${PROJECT_NAME}_UTIL_HEADERS} )
         
 # softokn
 set ( ${PROJECT_NAME}_SOFTOKN_SRC )
+set ( ${PROJECT_NAME}_SOFTOKN_OPTS
+        /wd4005
+        /wd4013
+        /wd4018
+        /wd4244
+        /wd4267 )
+set ( ${PROJECT_NAME}_SOFTOKN_DEFS
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_CRT_NONSTDC_NO_WARNINGS
+        -DXP_PC
+        -DSHLIB_SUFFIX=\"dll\"
+        -DSHLIB_PREFIX=\"\"
+        -DSHLIB_VERSION=\"3\"
+        -DSOFTOKEN_SHLIB_VERSION=\"3\"
+        -DSOFTOKEN_LIB_NAME=\"softokn3.dll\"
+        -DRIJNDAEL_INCLUDE_TABLES
+        -DWIN32
+        -UDEBUG
+        -DNDEBUG
+        -D_WINDOWS
+        -DWIN95
+        -DNSS_NO_INIT_SUPPORT
+        -DUSE_UTIL_DIRECTLY
+        -DNO_NSPR_10_SUPPORT
+        -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
+        -DNSS_X86_OR_X64
+        -DMP_IS_LITTLE_ENDIAN
+        -DMP_ASSEMBLY_MULTIPLY
+        -DNSS_BEVAND_ARCFOUR
+        -DMP_ASSEMBLY_MULTIPLY
+        #-DNSS_USE_COMBA
+        -DUSE_HW_AES
+        -DINTEL_GCM
+        -DKRML_NOUINT128
+        -DMP_API_COMPATIBLE
+        -DSTDC_HEADERS
+        -DHAVE_STRERROR
+        -DHAVE_SNPRINTF
+        -DMEMMOVE
+        -D__DBINTERFACE_PRIVATE
+        -Dinline=__inline )
 
 # freebl
 set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
@@ -102,20 +159,22 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/alg2268.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/arcfour.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/arcfive.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/crypto_primitives.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/blake2b.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/desblapi.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/des.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/drbg.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/cts.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ctr.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/blinit.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/fipsfreebl.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/gcm.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/hmacct.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/rijndael.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/aeskeywrap.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/camellia.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/chacha20.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/chacha20poly1305.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/poly1305.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/det_rng.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/dh.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ec.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecdecode.c
@@ -134,7 +193,6 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mp_gf2m.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpcpucache.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecl.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecl_curve.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecl_mult.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecl_gf.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_aff.c
@@ -147,7 +205,12 @@ set ( ${PROJECT_NAME}_SOFTOKN_FREEBL_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_384.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_521.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/ecp_256_32.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/uint128.c
+        #${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/verified/Hacl_Chacha20.c
+        #${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/verified/Hacl_Chacha20_Vec128.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/verified/Hacl_Curve25519.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/verified/FStar.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/gcm-x86.c
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/aes-x86.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-wrap.c )
 list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
 source_group ( "src_freebl" FILES ${${PROJECT_NAME}_SOFTOKN_FREEBL_SRC} )
@@ -210,7 +273,7 @@ set ( ${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/legacydb/pcertdb.c
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken/legacydb/pk11db.c )
 list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC} )
-source_group ( "src_legacydb" FILES ${${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC} )        
+source_group ( "src_legacydb" FILES ${${PROJECT_NAME}_SOFTOKN_LEGACYDB_SRC} )
 
 # includes
 set ( ${PROJECT_NAME}_SOFTOKN_INCLUDES 
@@ -220,10 +283,40 @@ set ( ${PROJECT_NAME}_SOFTOKN_INCLUDES
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken )
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/verified
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken
+        ${CMAKE_CURRENT_LIST_DIR}/../nss_include/msvc_compat/C99 )
 
 # main
 set ( ${PROJECT_NAME}_SRC )
+set ( ${PROJECT_NAME}_OPTS
+        /wd4013
+        /wd4018
+        /wd4133
+        /wd4244
+        /wd4267 )
+set ( ${PROJECT_NAME}_DEFS
+        -D_CRT_SECURE_NO_WARNINGS
+        -D_CRT_NONSTDC_NO_WARNINGS
+        -DXP_PC
+        -DWIN32
+        -UDEBUG
+        -DNDEBUG
+        -D_WINDOWS
+        -DWIN95
+        -DUSE_UTIL_DIRECTLY
+        -DNO_NSPR_10_SUPPORT
+        -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
+        -DMOZILLA_CLIENT=1
+        -DNSS_X86_OR_X64
+        -DNSS_ENABLE_ZLIB
+        -DIN_LIBSSL
+        -DWIN32_NSS3_DLL_COMPAT
+        -DSHLIB_SUFFIX=\"dll\"
+        -DSHLIB_PREFIX=\"\"
+        -DSHLIB_VERSION=\"\"
+        -DSOFTOKEN_SHLIB_VERSION=\"3\"
+        -Dinline=__inline )
 
 # base
 set ( ${PROJECT_NAME}_BASE_SRC       
@@ -433,35 +526,6 @@ set ( ${PROJECT_NAME}_NSS_SRC
 list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_NSS_SRC} )
 source_group ( "src_nss" FILES ${${PROJECT_NAME}_NSS_SRC} )
 
-# lib/ssl
-set ( ${PROJECT_NAME}_SSL_SRC
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/dtlscon.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/prelib.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3con.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3gthr.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslauth.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslcon.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssldef.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslenum.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslerr.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslerrstrs.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslinit.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3ext.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslmutex.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslnonce.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslreveal.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslsecur.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslsnce.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslsock.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssltrace.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslver.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/authcert.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/cmpcert.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/sslinfo.c
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/ssl3ecc.c )
-list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SSL_SRC} )
-source_group ( "src_ssl" FILES ${${PROJECT_NAME}_SSL_SRC} )
-
 # lib/pkcs7
 set ( ${PROJECT_NAME}_PKCS7_SRC
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/pkcs7/certread.c
@@ -612,241 +676,20 @@ set ( ${PROJECT_NAME}_INCLUDES
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/ckfw/builtins
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/sysinit )
         
-# linux
-if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )
-    # util
-    set ( ${PROJECT_NAME}_UTIL_OPTS 
-            -ffunction-sections 
-            -fdata-sections )
-    set ( ${PROJECT_NAME}_UTIL_DEFS
-            -DLINUX2_1 
-            -DNSS_NO_GCC48  
-            -DLINUX -Dlinux 
-            -DHAVE_STRERROR 
-            -DXP_UNIX 
-            -D_REENTRANT 
-            -DUSE_UTIL_DIRECTLY 
-            -DNO_NSPR_10_SUPPORT 
-            -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES )
-
-    # softokn
-    set_source_files_properties ( 
-            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/desblapi.c 
-            PROPERTIES COMPILE_FLAGS 
-            -fno-strict-aliasing )
-    set_source_files_properties (
-            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-wrap.c 
-            PROPERTIES COMPILE_FLAGS 
-            -mssse3 )
-    set ( ${PROJECT_NAME}_SOFTOKN_OPTS 
-            -ffunction-sections 
-            -fdata-sections )
-    set ( ${PROJECT_NAME}_SOFTOKN_DEFS
-            -DLINUX2_1
-            -DNSS_NO_GCC48
-            -DLINUX 
-            -Dlinux
-            -DHAVE_STRERROR 
-            -DXP_UNIX 
-            -D_REENTRANT 
-            -DUSE_UTIL_DIRECTLY 
-            -DNO_NSPR_10_SUPPORT 
-            -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES 
-            -DSTDC_HEADERS 
-            -DHAVE_STRERROR 
-            -DHAVE_SNPRINTF 
-            -DMEMMOVE 
-            -D__DBINTERFACE_PRIVATE 
-            -DSHLIB_SUFFIX=\"so\"
-            -DSHLIB_PREFIX=\"lib\"
-            -DSHLIB_VERSION=\"3\"
-            -DSOFTOKEN_SHLIB_VERSION=\"3\"
-            -DRIJNDAEL_INCLUDE_TABLES 
-            -DFREEBL_NO_DEPEND
-            -DNSS_BEVAND_ARCFOUR
-            -DNSS_USE_COMBA
-            -DMP_CHAR_STORE_SLOW
-            -DMP_IS_LITTLE_ENDIAN
-            -DUSE_HW_AES
-            -DINTEL_GCM
-            -DMP_API_COMPATIBLE 
-            -DSOFTOKEN_LIB_NAME=\"libsoftokn3.so\" )
-
-    if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_amd64_[^_]+" )
-        list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mp_comba.c
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64.c
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/stubs.c
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/nsslowhash.c
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/arcfour-amd64-gas.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64_gas.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm.s )
-        set_source_files_properties (
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/arcfour-amd64-gas.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64_gas.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm.s
-                PROPERTIES 
-                COMPILE_FLAGS -Wa,--noexecstack 
-                LANGUAGE C )
-        list ( APPEND ${PROJECT_NAME}_SOFTOKN_DEFS
-                -DNSS_X86_OR_X64
-                -DNSS_X64
-                -DNSS_USE_64
-                -DMPI_AMD64
-                -DMP_ASSEMBLY_MULTIPLY )
-    endif ( )
-    # todo: currently broken
-    if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_i386_[^_]+" )
-        set ( ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_SRC} 
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_x86_asm.c
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_x86.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm.s )
-        set_source_files_properties (
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_x86.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes.s
-                ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm.s
-                PROPERTIES 
-                COMPILE_FLAGS -Wa,--noexecstack 
-                LANGUAGE C )
-        set ( ${PROJECT_NAME}_SOFTOKN_DEFS ${${PROJECT_NAME}_SOFTOKN_DEFS}
-                -DNSS_X86_OR_X64
-                -DNSS_X86 )
-    endif ( )
-    # main
-    set ( ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_SRC}               
-            ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/unix_err.c )  
-    set ( ${PROJECT_NAME}_OPTS 
-            -ffunction-sections 
-            -fdata-sections )
-    set ( ${PROJECT_NAME}_DEFS
-            -DLINUX2_1
-            -DNSS_NO_GCC48
-            -DLINUX
-            -Dlinux
-            -DHAVE_STRERROR
-            -DXP_UNIX
-            -D_REENTRANT
-            -DUSE_UTIL_DIRECTLY
-            -DNO_NSPR_10_SUPPORT
-            -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
-            -DNSS_ENABLE_ZLIB 
-            -DSHLIB_SUFFIX=\"so\"
-            -DSHLIB_PREFIX=\"lib\"
-            -DSHLIB_VERSION=\"3\"
-            -DSOFTOKEN_SHLIB_VERSION=\"3\"
-            -DMOZILLA_CLIENT=1 )
-endif ( )
-
-# windows
-if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
-    # util
-    set ( ${PROJECT_NAME}_UTIL_OPTS
-            /wd4244
-            /wd4267 )
-    set ( ${PROJECT_NAME}_UTIL_DEFS
-            -D_CRT_SECURE_NO_WARNINGS
-            -D_CRT_NONSTDC_NO_WARNINGS
-            -DXP_PC
-            -DWIN32
-            -UDEBUG
-            -DNDEBUG
-            -D_WINDOWS
-            -DWIN95
-            -DNSS_NO_INIT_SUPPORT
-            -DUSE_UTIL_DIRECTLY
-            -DNO_NSPR_10_SUPPORT
-            -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES )
-    # softokn   
-    set ( ${PROJECT_NAME}_SOFTOKN_OPTS
-            /wd4005
-            /wd4013
-            /wd4018
-            /wd4244
-            /wd4267 )
-    set ( ${PROJECT_NAME}_SOFTOKN_DEFS
-            -D_CRT_SECURE_NO_WARNINGS
-            -D_CRT_NONSTDC_NO_WARNINGS
-            -DXP_PC
-            -DSHLIB_SUFFIX=\"dll\"
-            -DSHLIB_PREFIX=\"\"
-            -DSHLIB_VERSION=\"3\"
-            -DSOFTOKEN_SHLIB_VERSION=\"3\"
-            -DSOFTOKEN_LIB_NAME=\"softokn3.dll\"
-            -DRIJNDAEL_INCLUDE_TABLES
-            -DWIN32
-            -UDEBUG
-            -DNDEBUG
-            -D_WINDOWS
-            -DWIN95
-            -DNSS_NO_INIT_SUPPORT
-            -DUSE_UTIL_DIRECTLY
-            -DNO_NSPR_10_SUPPORT
-            -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
-            -DNSS_X86_OR_X64
-            -DMP_IS_LITTLE_ENDIAN
-            -DMP_ASSEMBLY_MULTIPLY
-            # -DMP_NO_MP_WORD
-            -DNSS_BEVAND_ARCFOUR
-            -DMP_ASSEMBLY_MULTIPLY
-            #-DNSS_USE_COMBA
-            -DUSE_HW_AES
-            -DINTEL_GCM
-            -DMP_API_COMPATIBLE
-            -DSTDC_HEADERS
-            -DHAVE_STRERROR
-            -DHAVE_SNPRINTF
-            -DMEMMOVE 
-            -D__DBINTERFACE_PRIVATE )
-
-    # main
-    set ( ${PROJECT_NAME}_WIN_SRC
-            ${${PROJECT_NAME}_SOURCE_DIR}/lib/ssl/win32err.c )
-    list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_WIN_SRC} )
-    source_group ( "src_win" FILES ${${PROJECT_NAME}_WIN_SRC} )
-    set ( ${PROJECT_NAME}_OPTS
-            /wd4013
-            /wd4018
-            /wd4133
-            /wd4244
-            /wd4267 )
-    set ( ${PROJECT_NAME}_DEFS
-            -D_CRT_SECURE_NO_WARNINGS
-            -D_CRT_NONSTDC_NO_WARNINGS
-            -DXP_PC
-            -DWIN32
-            -UDEBUG
-            -DNDEBUG
-            -D_WINDOWS
-            -DWIN95
-            -DUSE_UTIL_DIRECTLY
-            -DNO_NSPR_10_SUPPORT
-            -DSSL_DISABLE_DEPRECATED_CIPHER_SUITE_NAMES
-            -DMOZILLA_CLIENT=1
-            -DNSS_X86_OR_X64
-            -DNSS_ENABLE_ZLIB
-            -DIN_LIBSSL
-            -DWIN32_NSS3_DLL_COMPAT
-            -DSHLIB_SUFFIX=\"dll\"
-            -DSHLIB_PREFIX=\"\" 
-            -DSHLIB_VERSION=\"\" 
-            -DSOFTOKEN_SHLIB_VERSION=\"3\" )
-endif ( )
 if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_i386_[^_]+" )
     list ( APPEND ${PROJECT_NAME}_UTIL_DEFS
             -D_X86_ )          
     list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC
-            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/curve25519_32.c
+            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/curve25519_64.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_x86_asm.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes-x86-masm.asm
-            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-x86-masm.asm )         
+            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-x86-masm.asm )
     list ( APPEND ${PROJECT_NAME}_SOFTOKN_DEFS
             -DMP_USE_UINT_DIGIT
             -D_X86_
             -DNSS_X86
-            -DMP_ASSEMBLY_SQUARE )
+            -DMP_ASSEMBLY_SQUARE
+            -DMP_ASSEMBLY_DIV_2DX1D )
     list ( APPEND ${PROJECT_NAME}_DEFS
             -D_X86_
             -DNSS_X86 )
@@ -859,6 +702,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_amd64_[^_]+" )
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl/curve25519_64.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64.c
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi/mpi_amd64_masm.asm
+            ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/arcfour-amd64-masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-aes-x64-masm.asm
             ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/intel-gcm-x64-masm.asm )
     list ( APPEND ${PROJECT_NAME}_SOFTOKN_SRC ${${PROJECT_NAME}_SOFTOKN_WIN64_SRC} )

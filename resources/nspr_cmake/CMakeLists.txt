@@ -184,7 +184,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )
             ${${PROJECT_NAME}_SOURCE_DIR}/pr/src/md/unix/uxshm.c
             ${${PROJECT_NAME}_SOURCE_DIR}/pr/src/md/unix/uxwrap.c
             ${${PROJECT_NAME}_SOURCE_DIR}/pr/src/md/unix/linux.c )
-    source_group ( "src_md_unix" FILES ${${PROJECT_NAME}_MD_UNIX_SRC} ) 
+    source_group ( "src_md_unix" FILES ${${PROJECT_NAME}_MD_UNIX_SRC} )
     list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_MD_UNIX_SRC} )
 
     # pthreads
@@ -193,7 +193,7 @@ if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "linux_[^_]+_[^_]+" )
             ${${PROJECT_NAME}_SOURCE_DIR}/pr/src/pthreads/ptsynch.c
             ${${PROJECT_NAME}_SOURCE_DIR}/pr/src/pthreads/ptthread.c
             ${${PROJECT_NAME}_SOURCE_DIR}/pr/src/pthreads/ptmisc.c )
-    source_group ( "src_pthreads" FILES ${${PROJECT_NAME}_PTHREADS_SRC} ) 
+    source_group ( "src_pthreads" FILES ${${PROJECT_NAME}_PTHREADS_SRC} )
     list ( APPEND ${PROJECT_NAME}_SRC ${${PROJECT_NAME}_PTHREADS_SRC} )
 
 endif ( )
@@ -303,11 +303,12 @@ endif ( )
 # windows
 if ( ${PROJECT_NAME}_TOOLCHAIN MATCHES "windows_[^_]+_[^_]+" )
     set ( ${PROJECT_NAME}_OPTS 
-            -UWINNT            
+            -UWINNT
+            /wd4022
             /wd4244
             /wd4267 
             /wd4554 )
-    set ( ${PROJECT_NAME}_DEFS           
+    set ( ${PROJECT_NAME}_DEFS
             -DXP_PC=1 
             -DWIN95=1 
             -D_PR_GLOBAL_THREADS_ONLY=1
