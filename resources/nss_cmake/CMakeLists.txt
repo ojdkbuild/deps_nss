@@ -284,8 +284,12 @@ set ( ${PROJECT_NAME}_SOFTOKN_INCLUDES
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/ecl
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/mpi
         ${${PROJECT_NAME}_SOURCE_DIR}/lib/freebl/verified
-        ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken
-        ${CMAKE_CURRENT_LIST_DIR}/../nss_include/msvc_compat/C99 )
+        ${${PROJECT_NAME}_SOURCE_DIR}/lib/softoken )
+
+if ( MSVC_VERSION STREQUAL 1600 )
+    list ( APPEND ${PROJECT_NAME}_SOFTOKN_INCLUDES
+            ${CMAKE_CURRENT_LIST_DIR}/../nss_include/msvc_compat/C99 )
+endif ( )
 
 # main
 set ( ${PROJECT_NAME}_SRC )
